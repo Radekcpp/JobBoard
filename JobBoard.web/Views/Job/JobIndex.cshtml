@@ -1,0 +1,54 @@
+﻿@model IEnumerable<JobBoard.Web.Models.JobDto>
+
+<br />
+<br />
+<div class="container p-4 border">
+    <div class="row pb-2">
+        <div class="col">
+            <h1 class="text-primary"> Jobs List</h1>
+        </div>
+        <div class="col text_end pt-1">
+            <a asp-action="JobCreate" class="btn btn-outline-primary"><i class="fas fa-plus"></i>Create New Job Offer</a>
+        </div>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Title
+                </th>
+                <th>
+                    Description
+                </th>
+                <th>
+                    Requirements
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @item.Title
+                    </td>
+                    <td>
+                        @item.Description
+                    </td>
+                    <td>
+                        @item.Requirements
+                    </td>
+                    <td>
+                        <a asp-action="JobEdit" class="btn btn-success" asp-route-jobId="@item.JobId">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a asp-action="JobDelete" class="btn btn-danger" asp-route-jobId="@item.JobId">
+                            <i class="fas fa-trash"></i>
+                        </a>
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

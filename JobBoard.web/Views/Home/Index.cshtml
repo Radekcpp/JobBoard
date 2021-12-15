@@ -1,8 +1,28 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@using JobBoard.Web.Models
+@model IEnumerable<JobDto>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<form>
+    <div class="container row">
+
+        @foreach(var job in Model)
+        {
+        <div class="col-4 ">
+            <div class="p-0 my-3 border">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title text-success">@job.Title</h3>
+                        <span class="badge badge-light mb-2 ">@job.Description</span>
+                        <p class="card-text">@job.Description</p>
+                        <div class="row">
+                            <div class="col">
+                                <a asp-action="Details" asp-route-jobId="@job.JobId" class="btn btn-success form-control">Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        }
+    </div>
+</form>
+
