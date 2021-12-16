@@ -34,7 +34,6 @@ namespace JobBoard.Services.JobsAPI.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         [Route("{id}")]
         public async Task<object> Get(int id)
         {

@@ -30,6 +30,16 @@ namespace JobBoard.web.Controllers
             }
             return View(list);
         }
+        public async Task<IActionResult> Details(int jobId)
+        {
+            JobDto model = new();
+            var response = await _jobService.GetJobByIdAsync<ResponseDto>(jobId, "");
+            if (response != null && response.IsSuccess)
+            {
+                model = JsonConvert.DeserializeObject<JobDto>(Convert.ToString(response.Result));
+            }
+            return View(model);
+        }
 
         public IActionResult Privacy()
         {

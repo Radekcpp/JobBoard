@@ -18,7 +18,10 @@ builder.Services.AddSingleton(mapper);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IJobRepository, JobRepository>();
 builder.Services.AddControllers();
-
+builder.Services.AddRazorPages(options =>
+{
+    options.Conventions.AuthorizePage("/Job/JobIndex");
+});
 builder.Services.AddAuthentication("Bearer").AddJwtBearer("Bearer", options =>
 {
     options.Authority = "https://localhost:44349/";

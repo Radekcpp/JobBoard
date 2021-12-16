@@ -1,0 +1,47 @@
+﻿@using JobBoard.Web.Models
+@model JobDto
+
+<form>
+    <input asp-for="JobId" hidden />
+    <div class=" pt-4">
+        <div class="card container" style="border:1px solid #808080;">
+            <div class="card-header bg-dark text-light row" style="border-radius: 0px;">
+                <div class="col-12 col-md-6">
+                    <h1 class="text-white">@Model.Title</h1>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="container rounded p-2">
+                    <div class="row">
+                        <div class="col-12 col-lg-8">
+                            <div class="row pl-3">
+
+                                <div class="col-12">
+                                    <span class="badge badge-primary text-success p-3 border">Required: @Model.Requirements</span>
+                                    <span class="badge badge-secondary text-success p-3 border">Nice to have: @Model.NiceToHave</span>
+
+                                    <p class="text-secondary">@Model.Description </p>
+                                    @{
+                                        string[] list = @Model.Duties.Split(",");
+                                    }
+                                    <h2>Your duties:</h2>
+                                    @foreach (var item in list)
+                                    {
+                                    <ul>
+                                        <li>@item</li>
+                                    </ul>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer row bg-dark">
+                <div class="col-12 col-md-6 pb-1 ">
+                    <a asp-action="Index" class="btn btn-success btn-square form-control btn-lg" style="height:50px;">Back to List</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
