@@ -50,6 +50,24 @@ namespace JobBoard.Services.JobsAPI.Controllers
             return _response;
         }
 
+        [HttpGet]
+        [Route("{userId}")]
+        [Authorize]
+        public async Task<object> Get(string userId)
+        {
+            try
+            {
+                IEnumerable<JobDto> jobDtos = await _jobRepository.GetJobByUserId(userId);
+                _response.Result = jobDtos;
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.ErrorMessages = new List<string> { ex.ToString() };
+            }
+            return _response;
+        }
+
         [HttpPost]
         [Authorize]
 

@@ -57,6 +57,12 @@ namespace JobBoard.Services.JobsAPI.Repository
             return _mapper.Map<JobDto>(job);
         }
 
+        public async Task<IEnumerable<JobDto>> GetJobByUserId(string userId)
+        {
+            List<Job> jobList = await _db.Jobs.Where(x => x.UserId == userId).ToListAsync();
+            return _mapper.Map<List<JobDto>>(jobList);
+        }
+
         public async Task<IEnumerable<JobDto>> GetJobs()
         {
             List<Job> jobList = await _db.Jobs.ToListAsync();

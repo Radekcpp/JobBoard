@@ -8,5 +8,7 @@ namespace JobBoard.Services.JobsAPI.Repository
         Task<JobDto> GetJobById(int jobId);
         Task<JobDto> CreateUpdateJob(JobDto jobDto);
         Task<bool> DeleteJob(int jobId);
+        Task<IEnumerable<JobDto>> GetJobByUserId(string jobId);
+
     }
 }

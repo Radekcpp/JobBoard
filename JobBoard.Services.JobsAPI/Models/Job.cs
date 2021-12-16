@@ -12,5 +12,7 @@ namespace JobBoard.Services.JobsAPI.Models
         public string Requirements { get; set; }
         public string NiceToHave { get; set; }
         public string Duties { get; set; }
+        public string UserId { get; set; }
+        public string Email { get; set; }
     }
 }
