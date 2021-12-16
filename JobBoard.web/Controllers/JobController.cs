@@ -23,7 +23,18 @@ namespace JobBoard.web.Controllers
             {
                 list = JsonConvert.DeserializeObject<List<JobDto>>(Convert.ToString(response.Result));
             }
-            return View(list);
+            List<JobDto> actualList = new();
+            int nameLength = User.Identity.Name.Length;
+            foreach (var job in list)
+            {
+                int titleLenghtWithoutName = job.Title.Length - nameLength;
+                if(job.Title.Substring(job.Title.Length-nameLength) == User.Identity.Name)
+                {
+                    job.Title = job.Title.Substring(0, titleLenghtWithoutName);
+                    actualList.Add(job);
+                }
+            }
+            return View(actualList);
         }
         public async Task<IActionResult> JobCreate()
         {
@@ -33,6 +44,8 @@ namespace JobBoard.web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> JobCreate(JobDto model)
         {
+            string name = User.Identity.Name;
+            model.Title += name;
             if (ModelState.IsValid)
             {
                 var accessToken = await HttpContext.GetTokenAsync("access_token");
@@ -51,6 +64,7 @@ namespace JobBoard.web.Controllers
             if (response != null && response.IsSuccess)
             {
                 JobDto model = JsonConvert.DeserializeObject<JobDto>(Convert.ToString(response.Result));
+                model.Title = DeleteNameFromTitle(model.Title);
                 return View(model);
             }
             return NotFound();
@@ -59,6 +73,8 @@ namespace JobBoard.web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> JobEdit(JobDto model)
         {
+            string name = User.Identity.Name;
+            model.Title += name;
             if (ModelState.IsValid)
             {
                 var accessToken = await HttpContext.GetTokenAsync("access_token");
@@ -95,6 +111,28 @@ namespace JobBoard.web.Controllers
                 }
             }
             return View(model);
+        }
+        string DeleteNameFromTitle(string title)
+        {
+            int index = 0;
+            bool previousIsLower = false;
+            foreach (var letter in title)
+            {
+                if (previousIsLower && Char.IsUpper(letter))
+                {
+                    return title.Substring(0, index);
+                }
+                if (Char.IsLower(letter))
+                {
+                    previousIsLower = true;
+                }
+                else
+                {
+                    previousIsLower = false;
+                }
+                index++;
+            }
+            return title;
         }
     }
 }

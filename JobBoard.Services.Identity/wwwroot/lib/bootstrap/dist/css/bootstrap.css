@@ -4490,7 +4490,11 @@ textarea.form-control-lg {
 }
 
 .card-text:last-child {
-  margin-bottom: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 150px;
+    color:aqua;
 }
 
 .card-link + .card-link {

@@ -20,7 +20,7 @@ namespace JobBoard.web.Controllers
             _jobService = jobService;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string search=null)
         {
             List<JobDto> list = new();
             var response = await _jobService.GetAllJobsAsync<ResponseDto>("");
@@ -28,7 +28,27 @@ namespace JobBoard.web.Controllers
             {
                 list = JsonConvert.DeserializeObject<List<JobDto>>(Convert.ToString(response.Result));
             }
-            return View(list);
+            List<JobDto> actualList = new();
+            if(search == null)
+            {
+                foreach(JobDto jobDto in list)
+                {
+                    jobDto.Title = DeleteNameFromTitle(jobDto.Title);
+                }
+                return View(list);
+            }
+            foreach (JobDto job in list)
+            {
+                if (job.Title.ToLower().Contains(search.ToLower()))
+                {
+                    actualList.Add(job); 
+                }
+            }
+            foreach(JobDto job in actualList)
+            {
+                job.Title = DeleteNameFromTitle(job.Title);
+            }
+            return View(actualList);
         }
         public async Task<IActionResult> Details(int jobId)
         {
@@ -38,6 +58,7 @@ namespace JobBoard.web.Controllers
             {
                 model = JsonConvert.DeserializeObject<JobDto>(Convert.ToString(response.Result));
             }
+            model.Title = DeleteNameFromTitle(model.Title);
             return View(model);
         }
 
@@ -60,6 +81,29 @@ namespace JobBoard.web.Controllers
         public IActionResult Logout()
         {
             return SignOut("Cookies", "oidc");
+        }
+
+        string DeleteNameFromTitle(string title)
+        {
+            int index = 0;
+            bool previousIsLower = false;
+            foreach(var letter in title)
+            {
+                if(previousIsLower && Char.IsUpper(letter))
+                {
+                    return title.Substring(0, index);
+                }
+                if (Char.IsLower(letter))
+                {
+                    previousIsLower= true;
+                }
+                else
+                {
+                    previousIsLower = false;
+                }
+                index++;
+            }
+            return title;
         }
     }
 }

@@ -3,25 +3,37 @@
 
 <form>
     <div class="container row">
-
-        @foreach(var job in Model)
+        @using (Html.BeginForm("Index", "Home", FormMethod.Get))
         {
-        <div class="col-4 ">
-            <div class="p-0 my-3 border">
-                <div class="card">
-                    <div class="card-body">
-                        <h3 class="card-title text-success">@job.Title</h3>
-                        <span class="badge badge-light mb-2 ">@job.Description</span>
-                        <p class="card-text">@job.Description</p>
-                        <div class="row">
-                            <div class="col">
-                                <a asp-action="Details" asp-route-jobId="@job.JobId" class="btn btn-success form-control">Details</a>
+            @Html.TextBox("Search")
+
+            <input type="submit" value="Search" />
+        }
+        @if (Model.Count() == 0)
+        {
+            <tr>
+                <td colspan="3" style="color:red">
+                    No jobs were found
+                </td>
+            </tr>
+        }
+        @foreach (var job in Model)
+        {
+            <div class="col-4 ">
+                <div class="p-0 my-3 border">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="card-title text-success">@job.Title</h3>
+                            <div class="card-text">@job.Description</div>
+                            <div class="row">
+                                <div class="col">
+                                    <a asp-action="Details" asp-route-jobId="@job.JobId" class="btn btn-success form-control">Details</a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
         }
     </div>
 </form>
